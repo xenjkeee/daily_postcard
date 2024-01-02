@@ -1,8 +1,10 @@
 import requests
 from bs4 import BeautifulSoup
+from datetime import datetime
 
 
-def __soup_html(url='https://nationaltoday.com/today/'):
+def __soup_html(url):
+    print(f'Request:{url}')
     response = requests.get(url)
     return BeautifulSoup(response.text, 'html.parser')
 
@@ -23,6 +25,14 @@ def __scrap_holidays(soup, card_class='day-card'):
     return list(map(lambda tag: __to_holiday(tag), soup.find_all(class_=card_class)))
 
 
+def __get_current_link():
+    link_format = 'https://nationaltoday.com/{date}-holidays/'
+    current_time = datetime.now()
+    formatted_date = current_time.strftime("%B-%-d").lower()
+    return link_format.format(date=formatted_date)
+
+
 def get_holidays():
-    unfiltered = __scrap_holidays(soup=__soup_html())
+    url = __get_current_link()
+    unfiltered = __scrap_holidays(soup=__soup_html(url))
     return list(filter(lambda x: x['title'] is not None, unfiltered))
