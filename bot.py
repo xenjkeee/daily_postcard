@@ -13,9 +13,8 @@ async def __send_holiday(holiday, bot_token, chat_id):
 
 def send_holiday(holiday, bot_token, chat_id):
     print(holiday)
-    print('Sending...')
     try:
         asyncio.run(__send_holiday(holiday, bot_token, chat_id))
     except Exception as err:
-        print(F'Failed! {str(err)}')
+        print(f'Failed! {str(err)}')
     print('--------------------------------------------------------')
